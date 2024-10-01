@@ -15,13 +15,7 @@ namespace Proculite.Common.Security.Cryptography
         public void EncryptStream(Stream readFromStream, Stream writeToStream)
         {
             ICryptoTransform encryptor = _symmetricAlgorithm.CreateEncryptor();
-            using (
-                CryptoStream cryptoStream = new CryptoStream(
-                    readFromStream,
-                    encryptor,
-                    CryptoStreamMode.Read
-                )
-            )
+            using (CryptoStream cryptoStream = readFromStream.CryptoReadStream(encryptor))
             {
                 cryptoStream.CopyTo(writeToStream);
             }
@@ -30,13 +24,7 @@ namespace Proculite.Common.Security.Cryptography
         public void DecryptStream(Stream readFromStream, Stream writeToStream)
         {
             ICryptoTransform decryptor = _symmetricAlgorithm.CreateDecryptor();
-            using (
-                CryptoStream cryptoStream = new CryptoStream(
-                    readFromStream,
-                    decryptor,
-                    CryptoStreamMode.Read
-                )
-            )
+            using (CryptoStream cryptoStream = readFromStream.CryptoReadStream(decryptor))
             {
                 cryptoStream.CopyTo(writeToStream);
             }

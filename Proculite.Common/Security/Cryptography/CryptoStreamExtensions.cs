@@ -5,7 +5,7 @@ namespace Proculite.Common.Security.Cryptography
 {
     public static class CryptoStreamExtensions
     {
-        public static BinaryReader AesEncryptStream(
+        public static CryptoStream AesEncryptStream(
             this Stream readFromStream,
             byte[] aesKey,
             byte[] aesIv,
@@ -17,7 +17,7 @@ namespace Proculite.Common.Security.Cryptography
             return readFromStream.CryptoReadStream(encryptor);
         }
 
-        public static BinaryReader AesDecryptStream(
+        public static CryptoStream AesDecryptStream(
             this Stream readFromStream,
             byte[] aesKey,
             byte[] aesIv,
@@ -29,24 +29,20 @@ namespace Proculite.Common.Security.Cryptography
             return readFromStream.CryptoReadStream(encryptor);
         }
 
-        public static BinaryReader CryptoReadStream(
+        public static CryptoStream CryptoReadStream(
             this Stream readFromStream,
             ICryptoTransform encryptor
         )
         {
-            return new BinaryReader(
-                new CryptoStream(readFromStream, encryptor, CryptoStreamMode.Read)
-            );
+            return new CryptoStream(readFromStream, encryptor, CryptoStreamMode.Read);
         }
 
-        public static BinaryWriter CryptoWriteStream(
+        public static CryptoStream CryptoWriteStream(
             this Stream writeToStream,
             ICryptoTransform encryptor
         )
         {
-            return new BinaryWriter(
-                new CryptoStream(writeToStream, encryptor, CryptoStreamMode.Write)
-            );
+            return new CryptoStream(writeToStream, encryptor, CryptoStreamMode.Write);
         }
     }
 }

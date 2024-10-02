@@ -1,5 +1,9 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 
 namespace Proculite.Common.Reflection
 {
@@ -41,7 +45,21 @@ namespace Proculite.Common.Reflection
                 return objectToCompare == compareWithObject;
             }
 
-            return false;
+            foreach (FieldInfo field in type.GetRuntimeFields().Where(field => !field.IsStatic))
+            {
+                if (field.IsStatic)
+                    continue;
+                object value1 = field.GetValue(objectToCompare);
+                object value2 = field.GetValue(compareWithObject);
+
+                if (!value1.RecursiveFieldsEquals(value2))
+                {
+                    // If any of the field values do not match, return false.
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

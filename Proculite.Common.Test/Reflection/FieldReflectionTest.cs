@@ -1,3 +1,4 @@
+using System.Drawing;
 using Proculite.Common.Reflection;
 
 namespace Proculite.Common.Test.Reflection
@@ -154,6 +155,22 @@ namespace Proculite.Common.Test.Reflection
             string? a = "ok";
             string? b = null;
             Assert.False(a.RecursiveFieldsEquals(b));
+        }
+
+        [Fact]
+        public void SameDateTime_EqualsTrue()
+        {
+            DateTime one = DateTime.MinValue;
+            DateTime two = DateTime.MinValue;
+            Assert.True(one.RecursiveFieldsEquals(two));
+        }
+
+        [Fact]
+        public void DifferentDateTime_EqualsFalse()
+        {
+            DateTime one = DateTime.MinValue;
+            DateTime two = DateTime.MaxValue;
+            Assert.False(one.RecursiveFieldsEquals(two));
         }
     }
 }

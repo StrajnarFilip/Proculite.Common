@@ -172,5 +172,37 @@ namespace Proculite.Common.Test.Reflection
             DateTime two = DateTime.MaxValue;
             Assert.False(one.RecursiveFieldsEquals(two));
         }
+
+        [Fact]
+        public void SameArray_EqualsTrue()
+        {
+            int[] array1 = [1, 2, 3, 4];
+            int[] array2 = [1, 2, 3, 4];
+            Assert.True(array1.RecursiveFieldsEquals(array2));
+        }
+
+        [Fact]
+        public void DifferentArray_EqualsFalse()
+        {
+            int[] array1 = [1, 2, 3, 4];
+            int[] array2 = [1, 2, 6, 4];
+            Assert.False(array1.RecursiveFieldsEquals(array2));
+        }
+
+        [Fact]
+        public void SameNullableArray_EqualsTrue()
+        {
+            string?[] array1 = [null, "one", null, "two"];
+            string?[] array2 = [null, "one", null, "two"];
+            Assert.True(array1.RecursiveFieldsEquals(array2));
+        }
+
+        [Fact]
+        public void DifferentNullableArray_EqualsFalse()
+        {
+            string?[] array1 = [null, "one", null, "two"];
+            string?[] array2 = [null, "one", "three", "two"];
+            Assert.False(array1.RecursiveFieldsEquals(array2));
+        }
     }
 }

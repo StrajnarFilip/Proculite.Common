@@ -59,6 +59,49 @@ namespace Proculite.Common.Reflection
                 }
             }
 
+            if (type.GetInterfaces().Contains(typeof(IEnumerable)))
+            {
+                if (!CompareEnumerable(objectToCompare, compareWithObject))
+                    return false;
+            }
+
+            return true;
+        }
+
+        private static bool CompareEnumerable(object objectToCompare, object compareWithObject)
+        {
+            IEnumerable<object?>? object1 = (objectToCompare as IEnumerable)?.Cast<object?>();
+            IEnumerable<object?>? object2 = (compareWithObject as IEnumerable)?.Cast<object?>();
+
+            if (object1 is null)
+            {
+                // If first object is null, return here.
+                return object2 is null;
+            }
+
+            if (object2 is null)
+            {
+                // We already know first object is not null.
+                // If first one is not null, but compareWithObject
+                // is null, they are not matching.
+                return false;
+            }
+
+            if (object1.Count() != object2.Count())
+            {
+                // If IEnumerables are of different size, return false.
+                return false;
+            }
+
+            for (int i = 0; i < object1.Count(); i++)
+            {
+                object? element1 = object1.ElementAt(i);
+                object? element2 = object2.ElementAt(i);
+
+                if (!element1.RecursiveFieldsEquals(element2))
+                    return false;
+            }
+
             return true;
         }
     }

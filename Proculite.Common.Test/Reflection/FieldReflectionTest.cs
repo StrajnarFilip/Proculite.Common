@@ -204,5 +204,38 @@ namespace Proculite.Common.Test.Reflection
             string?[] array2 = [null, "one", "three", "two"];
             Assert.False(array1.RecursiveFieldsEquals(array2));
         }
+
+        [Fact]
+        public void SameDictionary_EqualsTrue()
+        {
+            Dictionary<string, string> dictionary1 =
+                new() { { "one", "two" }, { "three", "four" } };
+            Dictionary<string, string> dictionary2 =
+                new() { { "one", "two" }, { "three", "four" } };
+
+            Assert.True(dictionary1.RecursiveFieldsEquals(dictionary2));
+        }
+
+        [Fact]
+        public void DifferentDictionaryKey_EqualsFalse()
+        {
+            Dictionary<string, string> dictionary1 =
+                new() { { "one", "two" }, { "three", "four" } };
+            Dictionary<string, string> dictionary2 =
+                new() { { "one", "two" }, { "seven", "four" } };
+
+            Assert.False(dictionary1.RecursiveFieldsEquals(dictionary2));
+        }
+
+        [Fact]
+        public void DifferentDictionaryValue_EqualsFalse()
+        {
+            Dictionary<string, string> dictionary1 =
+                new() { { "one", "two" }, { "three", "four" } };
+            Dictionary<string, string> dictionary2 =
+                new() { { "one", "two" }, { "three", "seven" } };
+
+            Assert.False(dictionary1.RecursiveFieldsEquals(dictionary2));
+        }
     }
 }
